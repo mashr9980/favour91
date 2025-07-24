@@ -42,7 +42,7 @@ export default function RegisterForm() {
       setUsername("");
       setEmail("");
       setPassword("");
-      window.location.href = "/"; // Redirect to home page after successful registration
+      router.push("/pricing");
     } catch (err) {
       setError(
         err.message || "An unexpected error occurred during registration."
@@ -94,12 +94,10 @@ export default function RegisterForm() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="register-password">Password</Label>
-                  <motion.button
+                  <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="flex items-center gap-1 text-sm text-primary hover:underline"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-1 text-sm text-primary hover:underline transition-all duration-200 hover:scale-105"
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -107,7 +105,7 @@ export default function RegisterForm() {
                       <Eye className="h-4 w-4" />
                     )}
                     <span>Show Password</span>
-                  </motion.button>
+                  </button>
                 </div>
                 <Input
                   id="register-password"
@@ -121,9 +119,7 @@ export default function RegisterForm() {
               {error && <p className="text-red-500 text-sm">{error}</p>}
               {success && <p className="text-green-500 text-sm">{success}</p>}
               <Button
-                className="w-full rounded-md bg-primary py-2 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                className="w-full rounded-md bg-primary py-2 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 transition-all duration-200 hover:scale-105"
                 type="submit"
                 disabled={loading}
               >

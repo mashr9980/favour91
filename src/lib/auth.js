@@ -55,6 +55,13 @@ export function setAuthCookies(authData) {
         COOKIE_OPTIONS.secure ? "secure;" : ""
       } samesite=${COOKIE_OPTIONS.sameSite}`;
     }
+    if (authData.tier) {
+      document.cookie = `tier=${authData.tier}; max-age=${
+        COOKIE_OPTIONS.maxAge
+      }; path=${COOKIE_OPTIONS.path}; ${
+        COOKIE_OPTIONS.secure ? "secure;" : ""
+      } samesite=${COOKIE_OPTIONS.sameSite}`;
+    }
   }
 }
 
@@ -70,9 +77,10 @@ export function getAuthCookies() {
       userId: cookies.user_id || null,
       username: cookies.username || null,
       email: cookies.email || null,
+      tier: cookies.tier || null,
     };
   }
-  return { token: null, userId: null, username: null, email: null };
+  return { token: null, userId: null, username: null, email: null, tier: null };
 }
 
 export function clearAuthCookies() {
@@ -81,15 +89,16 @@ export function clearAuthCookies() {
     document.cookie = `user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${COOKIE_OPTIONS.path};`;
     document.cookie = `username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${COOKIE_OPTIONS.path};`;
     document.cookie = `email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${COOKIE_OPTIONS.path};`;
+    document.cookie = `tier=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${COOKIE_OPTIONS.path};`;
   }
 }
 
 // Helper function to get redirect path based on role (if you add roles later)
-export function getRedirectPath(role) {
-  if (role === "admin") {
+export function getRedirectPath(tier) {
+  if (tier === "admin") {
     return "/admin/dashboard";
   }
-  return "/";
+  return tier ? "/dashboard" : "/pricing";
 }
 
 // Register a new user

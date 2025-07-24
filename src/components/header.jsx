@@ -9,7 +9,7 @@ import {
   Loader2,
   LogOut,
   User,
-  FileText,
+  LayoutDashboard, FileText,
 } from "lucide-react"; // Added FileText icon
 import {
   DropdownMenu,
@@ -142,11 +142,11 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {!user?.tier && <NavLink href="/pricing">Pricing</NavLink>}
+        {!user?.tier && <NavLink href="/pricing">Get Started</NavLink>}
         <NavLink href="/contact">Contact Us</NavLink>
         {isAuthenticated && user?.tier && (
-          <NavLink href="/content" className="flex items-center bg-red-500">
-            <FileText className="mr-1 h-4 w-4" /> <p>My Content</p>
+          <NavLink href="/dashboard" className="flex items-center">
+            <LayoutDashboard className="mr-1 h-4 w-4" /> <p>Dashboard</p>
           </NavLink>
         )}
       </nav>
@@ -173,9 +173,9 @@ export function Header() {
             </DropdownMenuItem>
             {user?.tier && (
               <DropdownMenuItem>
-                <Link href="/content" className="flex items-center w-full">
-                  <FileText className="mr-2 h-4 w-4" />
-                  My Content
+                <Link href="/dashboard" className="flex items-center w-full">
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  Dashboard
                 </Link>
               </DropdownMenuItem>
             )}
@@ -276,7 +276,7 @@ export function Header() {
                   href="/pricing"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Pricing
+                  Get Started
                 </MobileNavLink>
               )}
               <MobileNavLink
@@ -287,10 +287,10 @@ export function Header() {
               </MobileNavLink>
               {isAuthenticated && user?.tier && (
                 <MobileNavLink
-                  href="/content"
+                  href="/dashboard"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <FileText className="mr-2 h-4 w-4" /> My Content
+                  <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
                 </MobileNavLink>
               )}
               {loadingAuth ? (

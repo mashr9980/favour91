@@ -16,7 +16,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { loginUser, getRedirectPath, getAuthCookies } from "@/lib/auth"; // Import loginUser and getRedirectPath
+import { loginUser, getRedirectPath } from "@/lib/auth"; // Import loginUser and getRedirectPath
 import { toast } from "sonner";
 
 export default function LoginForm() {
@@ -38,7 +38,7 @@ export default function LoginForm() {
       console.log("Login successful:", data);
       toast.success("Login successful! Redirecting...");
 
-      window.location.href = getRedirectPath(data?.tier); // Redirect based on user role
+      router.push(getRedirectPath(data?.tier));
     } catch (err) {
       setError(err.message || "An unexpected error occurred.");
       console.error("Login error:", err);
@@ -77,12 +77,10 @@ export default function LoginForm() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <motion.button
+                  <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="flex items-center gap-1 text-sm text-primary hover:underline"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-1 text-sm text-primary hover:underline transition-all duration-200 hover:scale-105"
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -90,7 +88,7 @@ export default function LoginForm() {
                       <Eye className="h-4 w-4" />
                     )}
                     <span>Show Password</span>
-                  </motion.button>
+                  </button>
                 </div>
                 <Input
                   id="password"
@@ -111,9 +109,7 @@ export default function LoginForm() {
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button
-                className="w-full rounded-md bg-primary py-2 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                className="w-full rounded-md bg-primary py-2 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 transition-all duration-200 hover:scale-105"
                 type="submit"
                 disabled={loading}
               >
