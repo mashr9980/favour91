@@ -1,0 +1,171 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  Clock,
+  Settings,
+  Monitor,
+  Megaphone,
+  Calendar,
+  ArrowRight,
+} from "lucide-react";
+import Wrapper from "@/components/wrapper";
+import Banner from "@/components/banner";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { FaLongArrowAltRight } from "react-icons/fa";
+export default function ProcurementInboxSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  const featureCardsData = [
+    {
+      icon: "/assets/weekly.png",
+      title: "Weekly Bids Vault",
+      initialBorder: "border-[#E0E0E0]",
+      link: "/assets/procurement-inbox/weekly-bids-vault",
+    },
+    {
+      icon: "/assets/quick.png",
+      title: "Quick Vetting Tools",
+      initialBorder: "border-[#E0E0E0]",
+      link: "/assets/procurement-inbox/quick-vetting-tools",
+    },
+    {
+      icon: "/assets/captcha.png",
+      title: "Capability System",
+      initialBorder: "border-[#E0E0E0]",
+      link: "/assets/procurement-inbox/capability-system",
+    },
+    {
+      icon: "/assets/outreach.png",
+      title: "Outreach Toolkit",
+      initialBorder: "border-[#E0E0E0]",
+      link: "/assets/procurement-inbox/outreach-toolkit",
+    },
+    {
+      icon: "/assets/dashboard.png",
+      title: "Weekly Digest Dashboard",
+      initialBorder: "border-[#E0E0E0]",
+      link: "/assets/procurement-inbox/weekly-digest-dashboard",
+    },
+  ];
+
+  return (
+    <>
+      <Banner title="Procurement Inbox" />
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+        <Wrapper className="text-center" ref={ref}>
+          {/* Top Section: Title Tag and Description */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-12"
+          >
+            <h2 className="inline-block bg-[#F4EAFD] text-[black] text-[20px] font-bold px-6 py-2 rounded-full mb-6">
+              Welcome to Procurement Inbox
+            </h2>
+            <p className="max-w-3xl mx-auto text-[#272727] text-lg leading-relaxed">
+              your weekly launchpad to finding real bids and responding with
+              confidence. This dashboard is designed to help you eliminate
+              guesswork, position your business professionally, and take action
+              immediately – even if you're new to government contracting.
+            </p>
+          </motion.div>
+
+          {/* Feature Cards Grid */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 px-4 md:px-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            {featureCardsData.map((card, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className={cn(
+                  "group flex  flex-col relative p-8 py-10 rounded-xl border-[1px] bg-white text-left cursor-pointer transition-all duration-300 ease-in-out",
+                  "border-[#E0E0E0] ring-offset-white ring-[1px] ring-[#E0E0E0]",
+                  "hover:border-primary hover:ring-[1px] hover:ring-primary hover:ring-offset-[1px] hover:ring-offset-white",
+                  card.initialBorder
+                )}
+              >
+                <div className="flex items-center mb-6">
+                  <div className="flex-shrink-0 mr-4">
+                    <img
+                      src={card.icon}
+                      alt={card.title}
+                      className="w-[68px] h-[68px]"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold text-black group-hover:text-primary mb-2">
+                    {card.title}
+                  </h3>
+                </div>
+                <Link
+                  href={card.link}
+                  className="flex items-center text-vendr-purple hover:underline text-sm font-medium"
+                >
+                  View Details
+                  <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </Wrapper>
+      </section>
+      {/*  Terms and Condition  */}
+      <div className="relative flex min-h-[50vh] items-center justify-center bg-[#F2F2F2]">
+        {/* Subtle purple radial gradient background */}
+        <div
+          className="absolute inset-0 "
+          style={{
+            background:
+              "radial-gradient(circle at 10% 50%, #F4EAFD 0%, transparent 50%)",
+          }}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="relative z-10 flex flex-col items-center justify-center space-y-8 px-4 py-12 text-center"
+        >
+          <h1 className="text-[30px] font-bold text-[black]">
+            To read Procurement Inbox terms & Conditions
+          </h1>
+          <motion.div variants={itemVariants}>
+            <Link
+              href={"/assets/procurement-inbox/terms"}
+              className=" flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5"
+            >
+              Click Here <FaLongArrowAltRight className="ml-2 h-5 w-5" />
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
+    </>
+  );
+}
