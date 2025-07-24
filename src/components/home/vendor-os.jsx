@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Wrapper from "../wrapper"; // Assuming Wrapper is defined elsewhere
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { motion, useInView } from "framer-motion";
@@ -78,12 +79,14 @@ export default function VendrOSSection() {
             existing approach, VENDR OS equips you with powerful tools,
             templates, and strategies to bid with confidence.
           </motion.p>
-          <motion.button
-            className="flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5"
-            variants={itemVariants}
-          >
-            Start Bidding <FaLongArrowAltRight className="ml-2 h-5 w-5" />
-          </motion.button>
+          <motion.div variants={itemVariants}>
+            <Link
+              href="/pricing"
+              className="flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5"
+            >
+              Start Bidding <FaLongArrowAltRight className="ml-2 h-5 w-5" />
+            </Link>
+          </motion.div>
         </motion.div>
         <motion.div
           className="border-[#E9E9E9] border-[2px] rounded-[10px] p-[20px]"

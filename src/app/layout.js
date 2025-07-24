@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { CtaSection } from "@/components/cta-section";
 import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import ThemeProvider from "@/components/theme-provider";
 
 // Configure Plus Jakarta Sans
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -32,10 +33,12 @@ export default function RootLayout({ children }) {
       className={`${plusJakartaSans.variable} ${poppins.variable}`}
     >
       <body>
-        <Header />
-        {children}
-        <Toaster richColors />
-        <Footer />
+        <ThemeProvider>
+          <Header />
+          {children}
+          <Toaster richColors />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
