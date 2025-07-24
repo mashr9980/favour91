@@ -70,7 +70,7 @@ export default function DashboardPage() {
   const modules = [
     { tier: 1, title: "Opportunity Engine", href: "/dashboard/opportunity-engine" },
     { tier: 2, title: "Proposal Studio", href: "/dashboard/proposal-studio" },
-    { tier: 3, title: "Contract Command Center", href: "/dashboard/contract-command-center" },
+    { tier: 3, title: "Contract Engine", href: "/dashboard/contract-engine" },
   ];
 
   return (
