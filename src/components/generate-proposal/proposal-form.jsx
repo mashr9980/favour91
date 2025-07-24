@@ -11,7 +11,7 @@ import { Loader2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { getAuthCookies, getCommonHeaders } from "@/lib/auth";
 
-export default function ProposalForm({ onSuccess }) {
+export default function ProposalForm({ onSuccess, onBack }) {
   const [formData, setFormData] = useState({
     contract_title: "",
     agency: "",
@@ -77,10 +77,16 @@ export default function ProposalForm({ onSuccess }) {
         className="w-full max-w-2xl"
       >
         <Card className="rounded-lg shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-2xl font-bold text-center">
+          <CardHeader className="pb-4 flex items-center justify-between">
+            {onBack && (
+              <Button variant="outline" size="sm" onClick={onBack}>
+                Back
+              </Button>
+            )}
+            <CardTitle className="text-2xl font-bold flex-1 text-center">
               Create New Proposal
             </CardTitle>
+            <div className="w-12" />
           </CardHeader>
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -250,8 +256,6 @@ export default function ProposalForm({ onSuccess }) {
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button
                 className="w-full rounded-md bg-purple-600 py-2 text-lg font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:opacity-50"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
                 type="submit"
                 disabled={loading}
               >

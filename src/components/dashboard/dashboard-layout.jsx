@@ -51,7 +51,7 @@ export default function DashboardLayout({ children }) {
   const menuItems = [
     { tier: 1, href: "/dashboard", label: "Dashboard" },
     { tier: 1, href: "/dashboard/opportunity-engine", label: "Opportunity Engine" },
-    { tier: 2, href: "/dashboard/proposal-powerhouse", label: "Proposal Powerhouse" },
+    { tier: 2, href: "/dashboard/proposal-studio", label: "Proposal Studio" },
     { tier: 3, href: "/dashboard/contract-command-center", label: "Contract Command Center" },
   ];
 
