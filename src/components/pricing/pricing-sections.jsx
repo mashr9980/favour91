@@ -8,7 +8,6 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { API_BASE_URL } from "@/lib/api"; // Adjust path as needed
 import { getAuthCookies, getCommonHeaders } from "@/lib/auth";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 
 // API function to fetch pricing plans
 async function fetchPricingPlans() {
@@ -221,168 +220,94 @@ export default function PricingSection() {
   };
 
   if (loading) {
-  return (
-    <section className="relative py-24">
-      <div className="absolute inset-0 section-pattern opacity-20"></div>
-      <Wrapper className="relative z-10 text-center">
-        <div className="flex justify-center items-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <span className="ml-3 text-lg text-muted-foreground">
-            Loading pricing plans...
-          </span>
-        </div>
-      </Wrapper>
-    </section>
-  );
-}
+    return (
+      <section className="w-full py-12 bg-white">
+        <Wrapper className="text-center">
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="ml-3 text-lg text-gray-600">
+              Loading pricing plans...
+            </span>
+          </div>
+        </Wrapper>
+      </section>
+    );
+  }
 
-return (
-  <section className="relative py-24 lg:py-32">
-    <div className="absolute inset-0 section-pattern opacity-20"></div>
-    
-    <Wrapper className="relative z-10 text-center" ref={ref}>
+  return (
+  <section className="w-full py-12 bg-background text-foreground">
+    <Wrapper className="text-center" ref={ref}>
       {error && (
-        <div className="mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-lg max-w-2xl mx-auto">
-          <p className="text-destructive text-sm">
+        <div className="mb-6 p-4 bg-yellow-900/20 border border-yellow-800 rounded-lg">
+          <p className="text-yellow-200 text-sm">
             Unable to load latest pricing data. Showing default plans.
           </p>
         </div>
       )}
 
       <motion.div
-        className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-6"
         variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
       >
-        {pricingData.map((card, index) => (
+        {pricingData.map((card) => (
           <motion.div
             key={card.id}
-            className="relative group"
+            className="relative flex flex-col rounded-xl border border-border bg-card text-card-foreground shadow-md overflow-hidden"
             variants={itemVariants}
+            whileHover={{
+              scale: 1.02,
+              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
+              borderColor: "#a855f7",
+              transition: { duration: 0.3, ease: "easeOut" },
+            }}
           >
-            <div className="glass-effect rounded-2xl overflow-hidden h-full card-hover border border-border hover:border-primary/50 transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-              
-              <div className="relative z-10 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground py-6 px-8 rounded-t-2xl">
-                <h3 className="text-2xl font-bold">
-                  {card.name || card.title}
-                </h3>
-              </div>
-              
-              <div className="relative z-10 flex flex-col pt-8 items-center flex-1 p-8">
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center bg-primary/10 text-primary px-6 py-3 rounded-full mb-4">
-                    <span className="text-2xl font-bold">
-                      ${typeof card.price === 'string' ? card.price.replace(/\D/g, '') : card.price}
+            <div className="bg-primary text-primary-foreground py-6 px-8 rounded-t-xl">
+              <h3 className="text-2xl font-bold">
+                {card.name || card.title}
+              </h3>
+            </div>
+            <div className="flex flex-col pt-8 items-center flex-1">
+              <h2 className="text-[20px] font-semibold text-primary mb-6 bg-primary/10 rounded-full px-4 py-3">
+                ${card.price}/Month
+              </h2>
+              <ul className="space-y-4 text-left flex-1 w-full px-6">
+                {card.features.map((feature, featureIndex) => (
+                  <li
+                    key={featureIndex}
+                    className="flex items-center group text-base border-b border-muted pb-2 last:border-none"
+                  >
+                    <Check
+                      className="h-5 w-5 text-primary mr-2 flex-shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span className="font-medium">
+                      {feature}
                     </span>
-                    <span className="text-sm ml-1">/Month</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Billed monthly • Cancel anytime
-                  </p>
-                </div>
-                
-                <ul className="space-y-4 text-left flex-1 w-full mb-8">
-                  {card.features.map((feature, featureIndex) => (
-                    <li
-                      key={featureIndex}
-                      className="flex items-start text-foreground group-hover:text-primary/90 transition-colors text-base border-b border-border/50 last:border-b-0 pb-3"
-                    >
-                      <div className="w-5 h-5 bg-primary/20 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <Check className="h-3 w-3 text-primary" />
-                      </div>
-                      <span className="font-medium">
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <div className="grid grid-cols-1 gap-3 w-full">
-                  <Button
-                    onClick={() => handleStartBidding(card)}
-                    disabled={checkoutLoading === card.id}
-                    className="w-full purple-button h-12 text-base font-semibold"
-                  >
-                    {checkoutLoading === card.id ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        <span>Processing...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Start Free Trial</span>
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </>
-                    )}
-                  </Button>
-                  
-                  <Button
-                    onClick={() => handleLearnMore(card)}
-                    disabled={checkoutLoading === card.id}
-                    variant="outline"
-                    className="w-full secondary-button h-12 text-base font-semibold"
-                  >
-                    <span>Learn More</span>
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex w-full pt-4">
+                <button
+                  onClick={() => handleStartBidding(card)}
+                  disabled={checkoutLoading === card.id}
+                  className="flex items-center justify-center w-full py-2 rounded-bl-lg bg-primary/20 text-foreground hover:bg-primary hover:text-white font-semibold text-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {checkoutLoading === card.id ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Start Bidding</span>
+                      <FaLongArrowAltRight className="ml-2 h-5 w-5" />
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           </motion.div>
         ))}
-      </motion.div>
-      
-      {/* Additional section for enterprise plans */}
-      <motion.div
-        className="mt-16 text-center"
-        variants={itemVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-      >
-        <div className="glass-effect rounded-2xl p-8 max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold mb-4">
-            Need a Custom Solution?
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            Enterprise plans with custom integrations, dedicated support, and volume discounts available.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="purple-button">
-              <a href="/contact">
-                Contact Sales
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-            <Button asChild variant="outline" className="secondary-button">
-              <a href="/demo">
-                Schedule Demo
-              </a>
-            </Button>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Trust indicators */}
-      <motion.div
-        className="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground"
-        variants={itemVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-      >
-        <div className="flex items-center space-x-2">
-          <Check className="w-4 h-4 text-primary" />
-          <span>14-day free trial</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Check className="w-4 h-4 text-primary" />
-          <span>No setup or cancellation fees</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Check className="w-4 h-4 text-primary" />
-          <span>24/7 customer support</span>
-        </div>
       </motion.div>
     </Wrapper>
   </section>
