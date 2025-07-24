@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const mockOpportunities = [
   {
@@ -95,11 +96,11 @@ export default function OpportunityEnginePage() {
     return matchesFilter && matchesSearch;
   });
 
-  const badgeColor = (score) => {
-    if (score >= 4.5) return "bg-green-500 text-white";
-    if (score >= 4.0) return "bg-blue-500 text-white";
-    if (score >= 3.5) return "bg-yellow-400 text-black";
-    return "bg-red-500 text-white";
+  const badgeVariant = (score) => {
+    if (score >= 4.5) return "success";
+    if (score >= 4.0) return "info";
+    if (score >= 3.5) return "warning";
+    return "danger";
   };
 
   return (
@@ -149,9 +150,9 @@ export default function OpportunityEnginePage() {
                         <td className="px-4 py-2 whitespace-nowrap">{opp.agency}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{opp.dueDate}</td>
                         <td className="px-4 py-2">
-                          <span className={`rounded px-2 py-1 text-xs font-semibold ${badgeColor(opp.fitScore)}`}>
+                          <Badge variant={badgeVariant(opp.fitScore)}>
                             {opp.fitScore.toFixed(1)}
-                          </span>
+                          </Badge>
                         </td>
                         <td className="px-4 py-2 text-right">
                           <Button size="sm">VIEW &amp; POSITION</Button>

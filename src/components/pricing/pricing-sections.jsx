@@ -81,7 +81,7 @@ export default function PricingSection() {
     {
       id: 1,
       title: "Procurement Inbox",
-      price: "$147/Month",
+      price: 147,
       features: [
         "Weekly Bids Vault",
         "24/7 Support",
@@ -95,7 +95,7 @@ export default function PricingSection() {
     {
       id: 2,
       title: "Contract Execution Suite",
-      price: "$297/month",
+      price: 297,
       features: [
         "Tier 1 Included",
         "Proposal Vault",
@@ -109,7 +109,7 @@ export default function PricingSection() {
     {
       id: 3,
       title: "VENDR OS Premium",
-      price: "$997/Month",
+      price: 997,
       features: [
         "Tier 1 and 2 Included",
         "Smart Proposal Tools",
@@ -208,16 +208,6 @@ export default function PricingSection() {
     return "tier3";
   };
 
-  const handleLearnMore = (plan) => {
-    // Add your logic for learn more
-    console.log(
-      "Learn more about plan:",
-      plan.name || plan.title,
-      "tier:",
-      plan.tier
-    );
-    // You can navigate to a detailed pricing page or open a modal with plan.description
-  };
 
   if (loading) {
     return (
@@ -268,7 +258,7 @@ export default function PricingSection() {
               </div>
               <div className="flex flex-col pt-8 items-center flex-1">
                 <h2 className="text-[20px] font-semibold text-black mb-6 bg-[#F4EAFD] rounded-full px-4 py-3">
-                  ${card.price}/Month
+                  ${card.price}/month
                 </h2>
                 <ul className="space-y-4 text-left flex-1">
                   {card.features.map((feature, featureIndex) => (
@@ -290,7 +280,7 @@ export default function PricingSection() {
                   <button
                     onClick={() => handleStartBidding(card)}
                     disabled={checkoutLoading === card.id}
-                    className="flex items-center justify-center w-full py-2 rounded-bl-lg bg-[#E2C9FA] text-black hover:text-white font-semibold text-lg hover:bg-primary transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-full py-2 rounded-b-lg bg-[#E2C9FA] text-black hover:text-white font-semibold text-lg hover:bg-primary transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {checkoutLoading === card.id ? (
                       <>
@@ -303,14 +293,6 @@ export default function PricingSection() {
                         <FaLongArrowAltRight className="ml-2 h-5 w-5" />
                       </>
                     )}
-                  </button>
-                  <button
-                    onClick={() => handleLearnMore(card)}
-                    disabled={checkoutLoading === card.id}
-                    className="flex items-center justify-center w-full py-2 rounded-br-lg bg-[#E2C9FA] text-black hover:text-white font-semibold text-lg hover:bg-primary transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <span>Learn More</span>
-                    <FaLongArrowAltRight className="ml-2 h-5 w-5" />
                   </button>
                 </div>
               </div>
