@@ -3,151 +3,196 @@
 import { motion, useInView } from "framer-motion";
 import Wrapper from "../wrapper";
 import { useRef } from "react";
+import { 
+  Brain, 
+  FileText, 
+  Shield, 
+  Target, 
+  BarChart3, 
+  Users, 
+  Wrench, 
+  Calendar,
+  Mail,
+  CheckCircle
+} from "lucide-react";
 
-// Base64 encoded SVG for the top wavy border (points down, revealing white above)
-// This SVG defines the BLACK area that will be masked out, revealing the white background.
-// Path: M0 0 L0 15 L5 15 Q15 15 20 0 L20 0 Z
-// This creates a shape that follows the bottom edge of the white wave.
-const waveTopSvg = `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMCAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMCBMMCAxNSBMNSAxNSBRMTUgMTUgMjAgMCBMMjAgMCBaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=`;
-
-// Base64 encoded SVG for the bottom wavy border (points up, revealing white below)
-// This SVG defines the BLACK area that will be masked out, revealing the white background.
-// Path: M0 15 L0 0 L5 0 Q15 0 20 15 L20 15 Z
-// This creates a shape that follows the top edge of the white wave.
-const waveBottomSvg = `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMCAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMTUgTDAgMCBMNSAwIFEyMCAwIDIwIDE1IEwyMCAxNSBaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=`;
-
-export default function FeatureOverviewSection() {
+export default function FeaturesOverviewSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
   const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
         delayChildren: 0.3,
-        staggerChildren: 0.2,
+        staggerChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    },
   };
 
-  const featureTags = [
-    "SmartDraft AI Prompts",
-    "Proposal Vault",
-    "Compliance Toolkit",
-    "Bid/No-Bid Wizard",
-    "Contract Lifecycle Tracker",
-    "CRM & Onboarding Hub",
-    "Subcontractor Toolkit",
-    "Post-Award Execution Plan",
-    "Smart Email Vault",
-    "Calendar & Alerts",
+  const featureData = [
+    {
+      icon: <Brain className="w-6 h-6" />,
+      title: "SmartDraft AI Prompts",
+      description: "AI-powered proposal generation"
+    },
+    {
+      icon: <FileText className="w-6 h-6" />,
+      title: "Proposal Vault",
+      description: "Secure document management"
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: "Compliance Toolkit",
+      description: "Government requirement compliance"
+    },
+    {
+      icon: <Target className="w-6 h-6" />,
+      title: "Bid/No-Bid Wizard",
+      description: "Smart opportunity analysis"
+    },
+    {
+      icon: <BarChart3 className="w-6 h-6" />,
+      title: "Contract Lifecycle Tracker",
+      description: "End-to-end project monitoring"
+    },
+    {
+      icon: <Users className="w-6 h-6" />,
+      title: "CRM & Onboarding Hub",
+      description: "Client relationship management"
+    },
+    {
+      icon: <Wrench className="w-6 h-6" />,
+      title: "Subcontractor Toolkit",
+      description: "Partnership management tools"
+    },
+    {
+      icon: <CheckCircle className="w-6 h-6" />,
+      title: "Post-Award Execution Plan",
+      description: "Project delivery framework"
+    },
+    {
+      icon: <Mail className="w-6 h-6" />,
+      title: "Smart Email Vault",
+      description: "Communication organization"
+    },
+    {
+      icon: <Calendar className="w-6 h-6" />,
+      title: "Calendar & Alerts",
+      description: "Deadline management system"
+    }
   ];
 
   return (
-    <motion.section
-      className="relative w-full py-20 md:py-32 text-center text-white overflow-hidden
-                 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(/assets/grid.jpg)` }}
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black opacity-70 z-10"></div>
+    <section className="relative py-24 lg:py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background"></div>
+      <div className="absolute inset-0 section-pattern opacity-30"></div>
 
-      {/* Top wavy border */}
-      <div
-        className="absolute top-0 left-0 w-full h-[15px] z-20" // Height of the wave area
-        style={{
-          maskImage: `url(${waveTopSvg})`,
-          maskRepeat: "repeat-x",
-          maskSize: "20px 15px", // Width and height of one wave segment
-          backgroundColor: "white", // This color will be visible as the wave
-        }}
-      ></div>
-
-      {/* Bottom wavy border */}
-      <div
-        className="absolute bottom-0 left-0 w-full h-[15px] z-20" // Height of the wave area
-        style={{
-          maskImage: `url(${waveBottomSvg})`,
-          maskRepeat: "repeat-x",
-          maskSize: "20px 15px", // Width and height of one wave segment
-          backgroundColor: "white", // This color will be visible as the wave
-        }}
-      ></div>
-
-      {/* <div className="relative z-30 max-w-4xl mx-auto px-4">
-        <motion.h2
-          className="text-3xl md:text-[40px] font-bold leading-tight mb-6 font-plus-jakarta-sans"
-          variants={itemVariants}
-        >
-          Are You Ready To Start Winning Contracts?
-        </motion.h2>
-        <motion.p
-          className="text-lg md:text-[20px] font-bold text-white mb-10 max-w-2xl mx-auto font-poppins"
-          variants={itemVariants}
-        >
-          Join hundreds of small businesses using VENDR OS to simplify their
-          journey into government contracting.
-        </motion.p>
-        <motion.div
-          variants={itemVariants}
-          className="flex justify-center space-x-4"
-        >
-          <button className=" flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5">
-            Start Bidding <FaLongArrowAltRight className="ml-2 h-5 w-5" />
-          </button>
-        </motion.div>
-      </div> */}
-      {/* Overlay for better text readability */}
-      <Wrapper>
-        <div className="relative z-30 text-center" ref={ref}>
+      <Wrapper className="relative z-10">
+        <div className="text-center" ref={ref}>
           <motion.div
-            className="space-y-4 mb-12"
+            className="space-y-6 mb-16"
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <motion.h1
-              className="text-4xl md:text-[40px] font-bold text-white"
+            <motion.div
+              className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20"
               variants={itemVariants}
             >
-              Features Overview
-            </motion.h1>
+              <CheckCircle className="w-4 h-4" />
+              <span>Complete Solution</span>
+            </motion.div>
+
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold"
+              variants={itemVariants}
+            >
+              Everything You Need in{" "}
+              <span className="gradient-text">One Platform</span>
+            </motion.h2>
+
             <motion.p
-              className="text-lg md:text-xl text-white max-w-2xl lg:w-[50%] mx-auto"
+              className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
-              Your entire government contracting strategy in one smart system
+              Your complete government contracting toolkit with AI-powered workflows, 
+              smart automation, and proven strategies all in one intelligent system.
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="flex flex-wrap justify-center gap-4  mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            {featureTags.map((tag, index) => (
-              <motion.span
+            {featureData.map((feature, index) => (
+              <motion.div
                 key={index}
-                className="inline-block px-6 py-3 rounded-full text-[20px] font-semibold text-black bg-[#E2C9FA] whitespace-nowrap font-plus-jakarta-sans"
+                className="group relative"
                 variants={itemVariants}
               >
-                {tag}
-              </motion.span>
+                <div className="glass-effect rounded-xl p-6 h-full text-center card-hover">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                    {feature.icon}
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
             ))}
+          </motion.div>
+
+          <motion.div
+            className="mt-16 text-center"
+            variants={itemVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <div className="glass-effect rounded-2xl p-8 max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold mb-4">
+                Ready to Transform Your Government Contracting?
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                Join thousands of successful vendors who've streamlined their processes with VENDR OS
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.a
+                  href="/pricing"
+                  className="purple-button"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Start Free Trial
+                </motion.a>
+                <motion.a
+                  href="/contact"
+                  className="secondary-button"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Schedule Demo
+                </motion.a>
+              </div>
+            </div>
           </motion.div>
         </div>
       </Wrapper>
-    </motion.section>
+    </section>
   );
 }

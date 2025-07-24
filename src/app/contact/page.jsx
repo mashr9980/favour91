@@ -2,10 +2,9 @@
 
 import ContactSection from "@/components/contact/contact-section";
 import { motion } from "framer-motion";
+import { MessageCircle, Users } from "lucide-react";
 
-const waveBottomSvg = `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMCAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMTUgTDAgMCBMNSAwIFEyMCAwIDIwIDE1IEwyMCAxNSBaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=`;
-
-export default function Page() {
+export default function ContactPage() {
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -20,44 +19,68 @@ export default function Page() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    },
   };
 
   return (
-    <>
+    <div className="min-h-screen pt-16">
       <motion.section
-        className="relative w-full py-20  text-center text-white overflow-hidden
-                 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(/assets/grid.jpg)` }}
+        className="relative py-24 lg:py-32 text-center overflow-hidden hero-grid"
         variants={containerVariants}
         initial="hidden"
-        whileInView="visible"
+        animate="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black opacity-70 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
+        
+        <div className="absolute top-20 left-20 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
 
-        {/* Bottom wavy border */}
-        <div
-          className="absolute bottom-0 left-0 w-full h-[15px] z-20" // Height of the wave area
-          style={{
-            maskImage: `url(${waveBottomSvg})`,
-            maskRepeat: "repeat-x",
-            maskSize: "20px 15px", // Width and height of one wave segment
-            backgroundColor: "white", // This color will be visible as the wave
-          }}
-        ></div>
-
-        <div className="relative z-30 max-w-4xl mx-auto px-4">
-          <motion.h2
-            className="text-3xl md:text-[40px] text-center font-bold leading-tight mb-6 font-plus-jakarta-sans"
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
+          <motion.div
+            className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20"
             variants={itemVariants}
           >
-            Contact Us
-          </motion.h2>
+            <MessageCircle className="w-4 h-4" />
+            <span>We're Here to Help</span>
+          </motion.div>
+
+          <motion.h1
+            className="text-4xl md:text-6xl font-bold leading-tight mb-6"
+            variants={itemVariants}
+          >
+            Get in <span className="gradient-text">Touch</span>
+          </motion.h1>
+
+          <motion.p
+            className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
+            variants={itemVariants}
+          >
+            Have questions about VENDR OS? Need help getting started? 
+            Our team of government contracting experts is here to support your success.
+          </motion.p>
+
+          <motion.div
+            className="flex items-center justify-center space-x-8 text-sm text-muted-foreground"
+            variants={itemVariants}
+          >
+            <div className="flex items-center space-x-2">
+              <Users className="w-4 h-4 text-primary" />
+              <span>Expert support team</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <MessageCircle className="w-4 h-4 text-primary" />
+              <span>24-hour response time</span>
+            </div>
+          </motion.div>
         </div>
       </motion.section>
+      
       <ContactSection />
-    </>
+    </div>
   );
 }

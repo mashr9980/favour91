@@ -1,157 +1,277 @@
 "use client";
 
-import { Mail } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { Mail, Phone, MessageCircle, Send, Clock, Users, Headphones } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import Wrapper from "../wrapper";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 export default function ContactSection() {
-  const contactCardsData = [
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  const contactMethods = [
     {
+      icon: <MessageCircle className="w-8 h-8" />,
       title: "General Inquiries",
-      description:
-        "For questions about plans, product features, or account setup",
-      email: "support@favor91.com",
-      additionalInfo: "Response Time: Within 24 business hours",
+      description: "Questions about plans, features, or getting started with government contracting",
+      contact: "support@vendr-os.com",
+      responseTime: "Within 4 business hours",
+      color: "from-blue-500/20 to-blue-600/20"
     },
     {
+      icon: <Headphones className="w-8 h-8" />,
       title: "Technical Support",
-      description:
-        "Experiencing an issue inside your dashboard? Need help accessing files or tools?",
-      email: "support@favor91.com",
-      additionalInfo: 'Subject Line: "Tech Support – [Your Issue]"',
+      description: "Dashboard issues, file access problems, or technical troubleshooting",
+      contact: "tech@vendr-os.com",
+      responseTime: "Within 2 business hours",
+      color: "from-green-500/20 to-green-600/20"
     },
     {
-      title: "Partnerships + Licensing",
-      description:
-        "Interested in licensing VENDR OS for your program, institution, or client base?",
-      email: "support@favor91.com",
-      additionalInfo:
-        "Please include your name, organization, and a brief overview of your goals.",
-    },
+      icon: <Users className="w-8 h-8" />,
+      title: "Partnerships & Enterprise",
+      description: "Licensing opportunities, bulk subscriptions, or enterprise solutions",
+      contact: "partnerships@vendr-os.com",
+      responseTime: "Within 24 hours",
+      color: "from-purple-500/20 to-purple-600/20"
+    }
   ];
 
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
-      <Wrapper className="text-center">
-        {/* Contact Cards Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-6 mb-16">
-          {contactCardsData.map((card, index) => (
+    <section className="relative py-24 lg:py-32">
+      <div className="absolute inset-0 section-pattern opacity-20"></div>
+      
+      <Wrapper className="relative z-10" ref={ref}>
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {contactMethods.map((method, index) => (
             <motion.div
               key={index}
-              className={cn(
-                "flex flex-col items-start  p-8 rounded-xl border border-gray-200 bg-white hover:border-primary shadow-custom-light",
-                "hover:ring-2",
-                "hover:ring-primary",
-                "hover:ring-offset-2",
-                "hover:ring-offset-white"
-              )}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
-                borderColor: "#7F3DFF", // vendr-purple
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
-              style={{
-                transition:
-                  "border-color 0.3s ease-out, box-shadow 0.3s ease-out, transform 0.3s ease-out",
-              }}
+              className="group relative overflow-hidden"
+              variants={itemVariants}
             >
-              <h2 className="text-[20px] self-start font-semibold text-black mb-6 bg-[#F4EAFD] rounded-full px-4  py-3">
-                {card.title}
-              </h2>
-              <p className="text-[#272727] text-left text-lg mb-6">
-                {card.description}
-              </p>
-              <div className="flex items-center justify-center gap-2 mb-4 group">
-                <img
-                  src="/assets/email.png"
-                  alt="Email Icon"
-                  className="w-[67px] h-[67px]"
-                />
-                <div className="flex flex-col items-start">
-                  <Link
-                    href={`mailto:${card.email}`}
-                    className="font-semibold text-[20px]  group-hover:text-primary"
-                  >
-                    Email
-                  </Link>
-                  <p className="text-black  text-base font-normal">
-                    {card.email}
+              <div className="glass-effect rounded-2xl p-8 h-full card-hover relative">
+                <div className={`absolute inset-0 bg-gradient-to-br ${method.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`}></div>
+                
+                <div className="relative z-10">
+                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary/20 transition-colors">
+                    {method.icon}
+                  </div>
+
+                  <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors">
+                    {method.title}
+                  </h3>
+
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    {method.description}
                   </p>
+
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center space-x-3">
+                      <Mail className="w-4 h-4 text-primary" />
+                      <a 
+                        href={`mailto:${method.contact}`}
+                        className="text-sm font-medium hover:text-primary transition-colors"
+                      >
+                        {method.contact}
+                      </a>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Clock className="w-4 h-4 text-primary" />
+                      <span className="text-sm text-muted-foreground">{method.responseTime}</span>
+                    </div>
+                  </div>
+
+                  <Button 
+                    asChild 
+                    size="sm" 
+                    className="w-full secondary-button"
+                  >
+                    <a href={`mailto:${method.contact}`}>
+                      Send Email
+                      <Send className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
                 </div>
               </div>
-              <p className="text-[#272727] text-[18px] font-bold font-poppins">
-                {card.additionalInfo}
-              </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Separator Text */}
-        <h2 className="text-3xl md:text-[30px] font-bold mb-12 text-black">
-          Or Fill The Form To Drop Us Your Message
-        </h2>
+        <motion.div
+          className="max-w-4xl mx-auto"
+          variants={itemVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Send Us a <span className="gradient-text">Message</span>
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Fill out the form below and we'll get back to you within 24 hours
+            </p>
+          </div>
 
-        {/* Contact Form Section */}
-        <div className="flex justify-center px-4 md:px-6">
-          <div className="w-full max-w-7xl p-8 rounded-xl border border-gray-200 bg-white shadow-custom-light text-left">
-            <form className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Name
+          <div className="glass-effect rounded-2xl p-8 lg:p-12">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm font-medium">
+                    Full Name *
+                  </label>
+                  <Input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Your full name"
+                    required
+                    className="h-12"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium">
+                    Email Address *
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="your@email.com"
+                    required
+                    className="h-12"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="subject" className="text-sm font-medium">
+                  Subject *
                 </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-vendr-purple focus:border-vendr-purple"
-                  placeholder=""
+                <Input
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder="What's this about?"
+                  required
+                  className="h-12"
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Email
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-sm font-medium">
+                  Message *
                 </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-vendr-purple focus:border-vendr-purple"
-                  placeholder=""
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Message
-                </label>
-                <textarea
+                <Textarea
                   id="message"
                   name="message"
-                  rows={5}
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-vendr-purple focus:border-vendr-purple resize-y"
-                  placeholder=""
-                ></textarea>
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Tell us more about your inquiry..."
+                  rows={6}
+                  required
+                  className="resize-none"
+                />
               </div>
-              <button
+
+              <Button
                 type="submit"
-                className="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-sm text-lg font-semibold text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-200"
+                disabled={isSubmitting}
+                className="w-full h-12 purple-button text-lg"
               >
-                Send Message
-              </button>
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="ml-2 h-5 w-5" />
+                  </>
+                )}
+              </Button>
             </form>
+
+            <div className="mt-8 pt-8 border-t border-border text-center">
+              <p className="text-sm text-muted-foreground mb-4">
+                Prefer to call? We're available Monday-Friday, 9AM-6PM EST
+              </p>
+              <div className="flex items-center justify-center space-x-2">
+                <Phone className="w-4 h-4 text-primary" />
+                <a 
+                  href="tel:1-800-VENDR-OS" 
+                  className="text-lg font-semibold hover:text-primary transition-colors"
+                >
+                  1-800-VENDR-OS
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </Wrapper>
     </section>
   );

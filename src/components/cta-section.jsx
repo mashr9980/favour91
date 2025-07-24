@@ -1,19 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaLongArrowAltRight } from "react-icons/fa";
-
-// Base64 encoded SVG for the top wavy border (points down, revealing white above)
-// This SVG defines the BLACK area that will be masked out, revealing the white background.
-// Path: M0 0 L0 15 L5 15 Q15 15 20 0 L20 0 Z
-// This creates a shape that follows the bottom edge of the white wave.
-const waveTopSvg = `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMCAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMCBMMCAxNSBMNSAxNSBRMTUgMTUgMjAgMCBMMjAgMCBaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=`;
-
-// Base64 encoded SVG for the bottom wavy border (points up, revealing white below)
-// This SVG defines the BLACK area that will be masked out, revealing the white background.
-// Path: M0 15 L0 0 L5 0 Q15 0 20 15 L20 15 Z
-// This creates a shape that follows the top edge of the white wave.
-const waveBottomSvg = `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMCAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMTUgTDAgMCBMNSAwIFEyMCAwIDIwIDE1IEwyMCAxNSBaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=`;
+import { ArrowRight, Rocket, Users, Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function CtaSection() {
   const containerVariants = {
@@ -30,69 +20,123 @@ export function CtaSection() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    },
   };
 
+  const stats = [
+    {
+      icon: <Users className="w-6 h-6" />,
+      value: "1000+",
+      label: "Active Users"
+    },
+    {
+      icon: <Award className="w-6 h-6" />,
+      value: "$50M+",
+      label: "Contracts Won"
+    },
+    {
+      icon: <Rocket className="w-6 h-6" />,
+      value: "85%",
+      label: "Success Rate"
+    }
+  ];
+
   return (
-    <>
-      <motion.section
-        className="relative w-full py-20 md:py-32 text-center text-white overflow-hidden
-                 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(/assets/grid.jpg)` }}
+    <section className="relative py-24 lg:py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-primary/10"></div>
+      <div className="absolute inset-0 section-pattern opacity-20"></div>
+      
+      <div className="absolute top-20 left-20 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 right-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+
+      <motion.div
+        className="relative z-10 max-w-6xl mx-auto px-4 lg:px-8 text-center"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black opacity-70 z-10"></div>
+        <motion.div
+          className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20"
+          variants={itemVariants}
+        >
+          <Rocket className="w-4 h-4" />
+          <span>Start Your Success Story</span>
+        </motion.div>
 
-        {/* Top wavy border */}
-        <div
-          className="absolute top-0 left-0 w-full h-[15px] z-20" // Height of the wave area
-          style={{
-            maskImage: `url(${waveTopSvg})`,
-            maskRepeat: "repeat-x",
-            maskSize: "20px 15px", // Width and height of one wave segment
-            backgroundColor: "white", // This color will be visible as the wave
-          }}
-        ></div>
+        <motion.h2
+          className="text-4xl md:text-6xl font-bold leading-tight mb-6"
+          variants={itemVariants}
+        >
+          Ready to Start{" "}
+          <span className="gradient-text">Winning Contracts?</span>
+        </motion.h2>
 
-        {/* Bottom wavy border */}
-        <div
-          className="absolute bottom-0 left-0 w-full h-[15px] z-20" // Height of the wave area
-          style={{
-            maskImage: `url(${waveBottomSvg})`,
-            maskRepeat: "repeat-x",
-            maskSize: "20px 15px", // Width and height of one wave segment
-            backgroundColor: "white", // This color will be visible as the wave
-          }}
-        ></div>
+        <motion.p
+          className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
+          variants={itemVariants}
+        >
+          Join thousands of successful vendors who've transformed their government contracting journey with VENDR OS. Your next big opportunity is waiting.
+        </motion.p>
 
-        <div className="relative z-30 max-w-4xl mx-auto px-4">
-          <motion.h2
-            className="text-3xl md:text-[40px] font-bold leading-tight mb-6 font-plus-jakarta-sans"
-            variants={itemVariants}
-          >
-            Are You Ready To Start Winning Contracts?
-          </motion.h2>
-          <motion.p
-            className="text-lg md:text-[20px] font-bold text-white mb-10 max-w-2xl mx-auto font-poppins"
-            variants={itemVariants}
-          >
-            Join hundreds of small businesses using VENDR OS to simplify their
-            journey into government contracting.
-          </motion.p>
-          <motion.div
-            variants={itemVariants}
-            className="flex justify-center space-x-4"
-          >
-            <button className=" flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5">
-              Start Bidding <FaLongArrowAltRight className="ml-2 h-5 w-5" />
-            </button>
-          </motion.div>
-        </div>
-      </motion.section>
-    </>
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16"
+          variants={itemVariants}
+        >
+          <Button asChild size="lg" className="purple-button text-xl px-10 py-6 h-auto glow-effect">
+            <Link href="/pricing">
+              Get Started Today
+              <ArrowRight className="ml-3 h-6 w-6" />
+            </Link>
+          </Button>
+          
+          <Button asChild variant="outline" size="lg" className="secondary-button text-xl px-10 py-6 h-auto">
+            <Link href="/contact">
+              Schedule Demo
+            </Link>
+          </Button>
+        </motion.div>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+          variants={itemVariants}
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              className="glass-effect rounded-xl p-6 text-center"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                {stat.icon}
+              </div>
+              <h3 className="text-3xl font-bold mb-2 gradient-text">{stat.value}</h3>
+              <p className="text-muted-foreground">{stat.label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          className="mt-16 text-center"
+          variants={itemVariants}
+        >
+          <p className="text-sm text-muted-foreground mb-4">
+            No credit card required • 14-day free trial • Cancel anytime
+          </p>
+          <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
+            <span>✓ SOC 2 Compliant</span>
+            <span>✓ 99.9% Uptime</span>
+            <span>✓ 24/7 Support</span>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+    </section>
   );
 }

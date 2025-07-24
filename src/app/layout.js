@@ -1,41 +1,60 @@
 import { Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
-import { CtaSection } from "@/components/cta-section";
 import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 
-// Configure Plus Jakarta Sans
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-plus-jakarta-sans", // Define CSS variable for Plus Jakarta Sans
+  variable: "--font-plus-jakarta-sans",
   display: "swap",
 });
 
-// Configure Poppins
 const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-poppins", // Define CSS variable for Poppins
-  weight: ["400", "500", "600", "700"], // Specify weights you need
+  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata = {
-  title: "Vendr OS",
-  description: "Government Contracts Made Easy for First-Time Vendors",
+  title: "Vendr OS - Government Contracts Made Easy",
+  description: "Transform your government contracting journey with AI-powered tools, smart workflows, and proven strategies. Join thousands of successful vendors.",
+  keywords: "government contracts, procurement, bidding, proposals, SaaS, AI tools",
+  authors: [{ name: "Vendr OS" }],
+  openGraph: {
+    title: "Vendr OS - Government Contracts Made Easy",
+    description: "Transform your government contracting journey with AI-powered tools and smart workflows.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vendr OS - Government Contracts Made Easy",
+    description: "Transform your government contracting journey with AI-powered tools and smart workflows.",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${plusJakartaSans.variable} ${poppins.variable}`}
+      className={`${plusJakartaSans.variable} ${poppins.variable} dark`}
     >
-      <body>
-        <Header />
-        {children}
-        <Toaster richColors />
-        <Footer />
+      <body className="min-h-screen bg-background text-foreground">
+        <div className="relative">
+          <Header />
+          <main className="relative">
+            {children}
+          </main>
+          <Footer />
+        </div>
+        <Toaster 
+          richColors 
+          position="top-right"
+          closeButton
+          expand={false}
+          visibleToasts={3}
+        />
       </body>
     </html>
   );
