@@ -9,6 +9,7 @@ import {
   Megaphone,
   Calendar,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 import Wrapper from "@/components/wrapper";
 import Banner from "@/components/banner";
@@ -74,6 +75,11 @@ export default function ProcurementInboxSection() {
   return (
     <>
       <Banner title="Procurement Inbox" />
+      <Wrapper className="pt-4">
+        <Link href="/content" className="flex items-center text-primary mb-6">
+          <ArrowLeft className="mr-1 h-4 w-4" /> Back
+        </Link>
+      </Wrapper>
       <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
         <Wrapper className="text-center" ref={ref}>
           {/* Top Section: Title Tag and Description */}

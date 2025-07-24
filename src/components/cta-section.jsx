@@ -87,9 +87,12 @@ export function CtaSection() {
             variants={itemVariants}
             className="flex justify-center space-x-4"
           >
-            <button className=" flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5">
+            <Link
+              href="/pricing"
+              className=" flex items-center justify-center purple-button text-[15px] font-plus-jakarta-sans py-5"
+            >
               Start Bidding <FaLongArrowAltRight className="ml-2 h-5 w-5" />
-            </button>
+            </Link>
           </motion.div>
         </div>
       </motion.section>

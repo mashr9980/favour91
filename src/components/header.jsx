@@ -139,6 +139,15 @@ export function Header() {
                   VENDR OS Premium
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href="/smartbid-ai"
+                  className="block w-full py-2 font-semibold font-poppins"
+                  prefetch={false}
+                >
+                  Smartbid AI
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -268,6 +277,12 @@ export function Header() {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     VENDR OS Premium
+                  </MobileNavLink>
+                  <MobileNavLink
+                    href="/smartbid-ai"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Smartbid AI
                   </MobileNavLink>
                 </CollapsibleContent>
               </Collapsible>

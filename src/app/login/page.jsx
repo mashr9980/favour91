@@ -129,6 +129,10 @@ export default function LoginForm() {
             >
               Don&apos;t have an account? Register
             </Link>
+            <span className="mx-2">|</span>
+            <Link href="/lost-password" className="text-sm text-primary hover:underline">
+              Forgot Password?
+            </Link>
           </CardFooter>
         </Card>
       </motion.div>

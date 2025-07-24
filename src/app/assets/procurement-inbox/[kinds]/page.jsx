@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock } from "lucide-react";
+import { Lock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Banner from "@/components/banner";
 import Link from "next/link";
@@ -138,6 +138,11 @@ export default function MembershipCards() {
             .replace(/\b\w/g, (char) => char.toUpperCase()) || "Bids Vault"
         }
       />
+      <div className="px-4 pt-4">
+        <Link href="/assets/procurement-inbox" className="flex items-center text-primary mb-6">
+          <ArrowLeft className="mr-1 h-4 w-4" /> Back
+        </Link>
+      </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 md:p-8 justify-center items-stretch  ">
         {cards.map((card, index) => (
           <motion.div

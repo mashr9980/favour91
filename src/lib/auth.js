@@ -89,7 +89,7 @@ export function getRedirectPath(role) {
   if (role === "admin") {
     return "/admin/dashboard";
   }
-  return "/";
+  return "/content";
 }
 
 // Register a new user
