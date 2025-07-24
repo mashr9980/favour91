@@ -176,16 +176,7 @@ export default function ContentPage() {
               </li>
             ))}
           </ul>
-          {userTier === "tier3" && (
-            <div className="mt-8 text-center">
-              <Button
-                onClick={() => router.push("/generate-proposal")}
-                className="px-8 py-3 text-lg"
-              >
-                Generate Proposal
-              </Button>
-            </div>
-          )}
+          {/* Proposal generation moved to dashboard */}
         </CardContent>
       </Card>
     </div>

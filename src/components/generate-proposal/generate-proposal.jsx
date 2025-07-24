@@ -19,7 +19,7 @@ import { getAuthCookies, getCommonHeaders } from "@/lib/auth";
 export default function GeneratedProposalDisplay({
   initialProposalData,
   originalFormData,
-  onBackToForm,
+  onBack,
 }) {
   const [activeTab, setActiveTab] = useState("cover_letter");
   const [currentProposalData, setCurrentProposalData] =
@@ -137,20 +137,12 @@ export default function GeneratedProposalDisplay({
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
-      <header className="bg-slate-800 text-white p-4 shadow-md flex items-center">
-        <FileText className="h-6 w-6 mr-2" />
-        <h1 className="text-xl font-semibold">Generated Proposal</h1>
-      </header>
-      {/* Main Content Area */}
-      <main className="flex-1 p-6 flex justify-center items-start">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-4xl"
-        >
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-4xl mx-auto"
+    >
           <Card className="rounded-lg shadow-lg">
             <CardHeader className="pb-4 border-b border-gray-200 flex flex-row items-center justify-between">
               <CardTitle className="text-2xl font-bold">
@@ -281,14 +273,12 @@ export default function GeneratedProposalDisplay({
                 </TabsContent>
               </Tabs>
               <div className="mt-6 text-center">
-                <Button onClick={onBackToForm} variant="secondary">
-                  Go Back to Form
+                <Button onClick={onBack} variant="secondary">
+                  Go Back
                 </Button>
               </div>
             </CardContent>
           </Card>
         </motion.div>
-      </main>
-    </div>
   );
 }
