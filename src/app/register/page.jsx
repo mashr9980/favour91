@@ -45,9 +45,9 @@ export default function RegisterForm() {
       setEmail("");
       setPassword("");
       
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
+        setTimeout(() => {
+          window.location.href = "/pricing";
+        }, 2000);
     } catch (err) {
       setError(
         err.message || "An unexpected error occurred during registration."
