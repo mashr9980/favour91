@@ -42,34 +42,34 @@ export default function ProcurementInboxSection() {
     {
       icon: "/assets/proposal.png",
       title: "Proposal Vault",
-      initialBorder: "border-[#E0E0E0]",
+      initialBorder: "border-border",
     },
     {
       icon: "/assets/tools.png",
       title: "Submission Tools",
-      initialBorder: "border-[#E0E0E0]",
+      initialBorder: "border-border",
     },
     {
       icon: "/assets/tracking.png",
       title: "Tracking + Compliance",
-      initialBorder: "border-[#E0E0E0]",
+      initialBorder: "border-border",
     },
     {
       icon: "/assets/bid.png",
       title: "Bid Support",
-      initialBorder: "border-[#E0E0E0]",
+      initialBorder: "border-border",
     },
     {
       icon: "/assets/quick.png",
       title: "Quick Fix Guides",
-      initialBorder: "border-[#E0E0E0]",
+      initialBorder: "border-border",
     },
   ];
 
   return (
     <>
       <Banner title="Contract Execution Suite" />
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <Wrapper className="text-center" ref={ref}>
           {/* Top Section: Title Tag and Description */}
           <motion.div
@@ -78,10 +78,10 @@ export default function ProcurementInboxSection() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mb-12"
           >
-            <h2 className="inline-block bg-[#F4EAFD] text-[black] text-[20px] font-bold px-6 py-2 rounded-full mb-6">
+            <h2 className="inline-block bg-primary/10 text-primary text-[20px] font-bold px-6 py-2 rounded-full mb-6">
               Welcome to Contract Execution Suite
             </h2>
-            <p className="max-w-3xl mx-auto text-[#272727] text-lg leading-relaxed">
+            <p className="max-w-3xl mx-auto text-muted-foreground text-lg leading-relaxed">
               You’re no longer guessing. With the Contract Execution Suite,
               you’ll prepare smarter proposals, avoid common mistakes, and
               finally compete with confidence. These are the exact tools used by
@@ -101,9 +101,9 @@ export default function ProcurementInboxSection() {
                 key={index}
                 variants={itemVariants}
                 className={cn(
-                  "group flex  flex-col relative p-8 py-10 rounded-xl border-[1px] bg-white text-left cursor-pointer transition-all duration-300 ease-in-out",
-                  "border-[#E0E0E0] ring-offset-white ring-[1px] ring-[#E0E0E0]",
-                  "hover:border-primary hover:ring-[1px] hover:ring-primary hover:ring-offset-[1px] hover:ring-offset-white",
+                  "group flex  flex-col relative p-8 py-10 rounded-xl border-[1px] bg-card text-left cursor-pointer transition-all duration-300 ease-in-out",
+                  "border-border ring-offset-background ring-[1px] ring-border",
+                  "hover:border-primary hover:ring-[1px] hover:ring-primary hover:ring-offset-[1px] hover:ring-offset-background",
                   card.initialBorder
                 )}
               >
@@ -115,7 +115,7 @@ export default function ProcurementInboxSection() {
                       className="w-[68px] h-[68px]"
                     />
                   </div>
-                  <h3 className="text-xl font-semibold text-black group-hover:text-primary mb-2">
+                  <h3 className="text-xl font-semibold text-foreground group-hover:text-primary mb-2">
                     {card.title}
                   </h3>
                 </div>
@@ -132,7 +132,7 @@ export default function ProcurementInboxSection() {
         </Wrapper>
       </section>
       {/*  Terms and Condition  */}
-      <div className="relative flex min-h-[50vh] items-center justify-center bg-[#F2F2F2]">
+      <div className="relative flex min-h-[50vh] items-center justify-center bg-muted">
         {/* Subtle purple radial gradient background */}
         <div
           className="absolute inset-0 "
@@ -148,7 +148,7 @@ export default function ProcurementInboxSection() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="relative z-10 flex flex-col items-center justify-center space-y-8 px-4 py-12 text-center"
         >
-          <h1 className="text-[30px] font-bold text-[black]">
+          <h1 className="text-[30px] font-bold text-foreground">
             To read Contract Execution Suite terms & Conditions
           </h1>
           <motion.div variants={itemVariants}>

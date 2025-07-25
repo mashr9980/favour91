@@ -15,19 +15,9 @@ const Footer = () => {
       { name: "Premium", href: "/assets/vendr-os-premium" },
     ],
     company: [
-      { name: "About Us", href: "/about" },
       { name: "Contact", href: "/contact" },
-      { name: "Blog", href: "/blog" },
-      { name: "Careers", href: "/careers" },
-      { name: "Press", href: "/press" },
     ],
-    resources: [
-      { name: "Help Center", href: "/help" },
-      { name: "Documentation", href: "/docs" },
-      { name: "API Reference", href: "/api" },
-      { name: "Community", href: "/community" },
-      { name: "Webinars", href: "/webinars" },
-    ],
+    resources: [],
     legal: [
       { name: "Privacy Policy", href: "/privacy" },
       { name: "Terms of Service", href: "/terms" },
@@ -127,21 +117,23 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div>
-              <h3 className="text-lg font-semibold mb-6">Resources</h3>
-              <ul className="space-y-3">
-                {footerLinks.resources.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {footerLinks.resources.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mb-6">Resources</h3>
+                <ul className="space-y-3">
+                  {footerLinks.resources.map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
