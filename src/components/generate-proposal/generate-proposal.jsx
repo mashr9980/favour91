@@ -16,6 +16,27 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { getAuthCookies, getCommonHeaders } from "@/lib/auth";
+
+function formatTextForDisplay(text) {
+  if (!text) return null;
+  const cleaned = text.replace(/\*\*/g, "");
+  const lines = cleaned.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  if (lines.length === 0) return null;
+  const heading = lines[0];
+  const items = lines.slice(1);
+  return (
+    <>
+      <h4 className="font-semibold mb-2">{heading}</h4>
+      {items.length > 0 && (
+        <ul className="list-disc list-inside space-y-1">
+          {items.map((item, idx) => (
+            <li key={idx}>{item.replace(/^[-*]\s*/, "")}</li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
 export default function GeneratedProposalDisplay({
   initialProposalData,
   originalFormData,
@@ -159,8 +180,7 @@ export default function GeneratedProposalDisplay({
               </CardTitle>
               <div className="flex gap-2">
                 <Button
-                  variant="outline"
-                  className="flex items-center gap-2 text-foreground hover:bg-surface/50 bg-transparent"
+                  className="purple-button"
                   onClick={() => handleDownload("pdf")}
                   disabled={downloadingPdf}
                 >
@@ -171,8 +191,7 @@ export default function GeneratedProposalDisplay({
                   Download PDF
                 </Button>
                 <Button
-                  variant="outline"
-                  className="flex items-center gap-2 text-foreground hover:bg-surface/50 bg-transparent"
+                  className="purple-button"
                   onClick={() => handleDownload("docx")}
                   disabled={downloadingDocx}
                 >
@@ -196,28 +215,28 @@ export default function GeneratedProposalDisplay({
                 <TabsList className="grid w-full grid-cols-4 bg-surface/50 rounded-md p-1 mb-6">
                   <TabsTrigger
                     value="cover_letter"
-                    className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     <Mail className="h-4 w-4" />
                     Cover Letter
                   </TabsTrigger>
                   <TabsTrigger
                     value="technical_approach"
-                    className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     <Settings className="h-4 w-4" />
                     Technical Approach
                   </TabsTrigger>
                   <TabsTrigger
                     value="qualifications"
-                    className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     <User className="h-4 w-4" />
                     Qualifications
                   </TabsTrigger>
                   <TabsTrigger
                     value="differentiators"
-                    className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     <Star className="h-4 w-4" />
                     Differentiators
@@ -246,8 +265,7 @@ export default function GeneratedProposalDisplay({
                       .join(" ")}
                   </h3>
                   <Button
-                    variant="outline"
-                  className="flex items-center gap-2 text-foreground hover:bg-surface/50 bg-transparent"
+                    className="purple-button"
                     onClick={handleRegenerateSection}
                     disabled={regenerating}
                   >
@@ -262,27 +280,27 @@ export default function GeneratedProposalDisplay({
                 )}
                 <TabsContent value="cover_letter">
                   <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
-                    {getContentForTab("cover_letter")}
+                    {formatTextForDisplay(getContentForTab("cover_letter"))}
                   </div>
                 </TabsContent>
                 <TabsContent value="technical_approach">
                   <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
-                    {getContentForTab("technical_approach")}
+                    {formatTextForDisplay(getContentForTab("technical_approach"))}
                   </div>
                 </TabsContent>
                 <TabsContent value="qualifications">
                   <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
-                    {getContentForTab("qualifications")}
+                    {formatTextForDisplay(getContentForTab("qualifications"))}
                   </div>
                 </TabsContent>
                 <TabsContent value="differentiators">
                   <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
-                    {getContentForTab("differentiators")}
+                    {formatTextForDisplay(getContentForTab("differentiators"))}
                   </div>
                 </TabsContent>
               </Tabs>
               <div className="mt-6 text-center">
-                <Button onClick={onBackToForm} variant="secondary">
+                <Button onClick={onBackToForm} className="purple-button">
                   Go Back to Form
                 </Button>
               </div>
