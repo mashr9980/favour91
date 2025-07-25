@@ -62,19 +62,19 @@ export default function Page() {
           </motion.h2>
         </div>
       </motion.section>
-      <div className="flex justify-center py-12 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="flex justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
         <motion.main
-          className="w-full max-w-3xl space-y-6 text-gray-800"
+          className="w-full max-w-3xl space-y-6 text-foreground"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex justify-between text-sm text-gray-600 mb-8">
-            <p className="text-[#272727] !font-bold ">
+          <div className="flex justify-between text-sm text-muted-foreground mb-8">
+            <p className="text-foreground !font-bold ">
               Effective Date{" "}
               <span className="font-poppins font-normal"> | 6/12/2025</span>
             </p>
-            <p className="text-[#272727] !font-bold ">
+            <p className="text-foreground !font-bold ">
               Last Updated{" "}
               <span className="font-poppins font-normal"> | 6/12/2025</span>
             </p>

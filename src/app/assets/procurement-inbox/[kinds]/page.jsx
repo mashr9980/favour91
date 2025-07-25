@@ -138,34 +138,34 @@ export default function MembershipCards() {
             .replace(/\b\w/g, (char) => char.toUpperCase()) || "Bids Vault"
         }
       />
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 md:p-8 justify-center items-stretch  ">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 md:p-8 justify-center items-stretch">
         {cards.map((card, index) => (
           <motion.div
             key={index}
             className={cn(
-              "relative rounded-xl p-[2px] flex-1 max-w-sm w-full border-[1px] bg-white text-left cursor-pointer transition-all duration-300 ease-in-out",
-              "border-[#E0E0E0] ring-offset-white ring-[1px] ring-[#E0E0E0]",
-              "hover:border-primary hover:ring-[1px] hover:ring-primary hover:ring-offset-[1px] hover:ring-offset-white"
+              "relative rounded-xl p-[2px] flex-1 max-w-sm w-full border-[1px] bg-card text-left cursor-pointer transition-all duration-300 ease-in-out",
+              "border-border ring-offset-background ring-[1px] ring-border",
+              "hover:border-primary hover:ring-[1px] hover:ring-primary hover:ring-offset-[1px] hover:ring-offset-background"
             )}
             transition={{ duration: 0.2 }}
           >
-            <div className="bg-white  justify-between rounded-xl pt-8  p-6 flex flex-col  border border-gray-200">
+            <div className="bg-card justify-between rounded-xl pt-8  p-6 flex flex-col  border border-border">
               <div className="px-6">
                 <h2 className="text-xl font-bold mb-2">{card.title}</h2>
-                <p className="text-black text-sm ">{card.description}</p>
+                <p className="text-foreground text-sm ">{card.description}</p>
               </div>
-              <div className="bg-white mt-6 pt-4 shadow-lg rounded-lg ">
+              <div className="bg-card mt-6 pt-4 shadow-lg rounded-lg ">
                 <div className="flex items-center mb-2 px-4">
                   <Lock className="h-4 w-4 text-primary shrink-0 mr-2" />
                   <h3 className="text-base font-semibold">
                     {card.membershipText}
                   </h3>
                 </div>
-                <p className="text-black text-sm px-6">{card.accessText}</p>
+                <p className="text-foreground text-sm px-6">{card.accessText}</p>
                 <Button className=" bg-primary mt-2 mx-6 hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-md mb-4">
                   Join Now
                 </Button>
-                <p className="text-center py-2 text-sm text-black bg-[#F5F5F5]">
+                <p className="text-center py-2 text-sm text-foreground bg-muted">
                   Already a member?{" "}
                   <Link href="/login" className="text-primary hover:underline">
                     Log in here
