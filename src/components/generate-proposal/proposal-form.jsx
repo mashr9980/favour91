@@ -69,14 +69,15 @@ export default function ProposalForm({ onSuccess }) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+    <div className="relative flex min-h-screen items-center justify-center p-4 hero-grid pt-16">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-2xl relative z-10"
       >
-        <Card className="rounded-lg shadow-lg">
+        <Card className="glass-effect border-primary/20 shadow-xl">
           <CardHeader className="pb-4">
             <CardTitle className="text-2xl font-bold text-center">
               Create New Proposal

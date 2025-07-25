@@ -137,29 +137,30 @@ export default function GeneratedProposalDisplay({
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="relative min-h-screen flex flex-col hero-grid pt-16 bg-background">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
       {/* Header */}
-      <header className="bg-slate-800 text-white p-4 shadow-md flex items-center">
+      <header className="bg-surface border-b border-border p-4 shadow-md flex items-center relative z-10 text-foreground">
         <FileText className="h-6 w-6 mr-2" />
         <h1 className="text-xl font-semibold">Generated Proposal</h1>
       </header>
       {/* Main Content Area */}
-      <main className="flex-1 p-6 flex justify-center items-start">
+      <main className="flex-1 p-6 flex justify-center items-start relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="w-full max-w-4xl"
         >
-          <Card className="rounded-lg shadow-lg">
-            <CardHeader className="pb-4 border-b border-gray-200 flex flex-row items-center justify-between">
+          <Card className="glass-effect border-primary/20 shadow-xl">
+            <CardHeader className="pb-4 border-b border-border flex flex-row items-center justify-between">
               <CardTitle className="text-2xl font-bold">
                 Your Proposal is Ready
               </CardTitle>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2 text-gray-700 hover:bg-gray-100 bg-transparent"
+                  className="flex items-center gap-2 text-foreground hover:bg-surface/50 bg-transparent"
                   onClick={() => handleDownload("pdf")}
                   disabled={downloadingPdf}
                 >
@@ -171,7 +172,7 @@ export default function GeneratedProposalDisplay({
                 </Button>
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2 text-gray-700 hover:bg-gray-100 bg-transparent"
+                  className="flex items-center gap-2 text-foreground hover:bg-surface/50 bg-transparent"
                   onClick={() => handleDownload("docx")}
                   disabled={downloadingDocx}
                 >
@@ -192,7 +193,7 @@ export default function GeneratedProposalDisplay({
                 onValueChange={(value) => setActiveTab(value)}
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-4 bg-gray-100 rounded-md p-1 mb-6">
+                <TabsList className="grid w-full grid-cols-4 bg-surface/50 rounded-md p-1 mb-6">
                   <TabsTrigger
                     value="cover_letter"
                     className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -246,7 +247,7 @@ export default function GeneratedProposalDisplay({
                   </h3>
                   <Button
                     variant="outline"
-                    className="flex items-center gap-2 text-gray-700 hover:bg-gray-100 bg-transparent"
+                  className="flex items-center gap-2 text-foreground hover:bg-surface/50 bg-transparent"
                     onClick={handleRegenerateSection}
                     disabled={regenerating}
                   >
@@ -260,22 +261,22 @@ export default function GeneratedProposalDisplay({
                   <p className="text-red-500 text-sm mb-4">{regenerateError}</p>
                 )}
                 <TabsContent value="cover_letter">
-                  <div className="min-h-[300px] border border-gray-200 rounded-md p-4 bg-gray-50 whitespace-pre-wrap">
+                  <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
                     {getContentForTab("cover_letter")}
                   </div>
                 </TabsContent>
                 <TabsContent value="technical_approach">
-                  <div className="min-h-[300px] border border-gray-200 rounded-md p-4 bg-gray-50 whitespace-pre-wrap">
+                  <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
                     {getContentForTab("technical_approach")}
                   </div>
                 </TabsContent>
                 <TabsContent value="qualifications">
-                  <div className="min-h-[300px] border border-gray-200 rounded-md p-4 bg-gray-50 whitespace-pre-wrap">
+                  <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
                     {getContentForTab("qualifications")}
                   </div>
                 </TabsContent>
                 <TabsContent value="differentiators">
-                  <div className="min-h-[300px] border border-gray-200 rounded-md p-4 bg-gray-50 whitespace-pre-wrap">
+                  <div className="min-h-[300px] border border-border rounded-md p-4 bg-surface/50 whitespace-pre-wrap">
                     {getContentForTab("differentiators")}
                   </div>
                 </TabsContent>
