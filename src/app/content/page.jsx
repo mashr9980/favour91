@@ -36,6 +36,7 @@ export default function ContentPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [downloadingPdf, setDownloadingPdf] = useState(null);
   const [pdfScale, setPdfScale] = useState(1.0);
+  const [pdfUrl, setPdfUrl] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -90,6 +91,29 @@ export default function ContentPage() {
 
     fetchContent();
   }, [router]);
+
+  useEffect(() => {
+    const loadPdf = async () => {
+      if (!content || !userTier) return;
+      const pdf = content.pdfs[selectedPdfIndex];
+      if (!pdf) return;
+      try {
+        const url = await fetchPdfUrl(pdf.filename);
+        setPdfUrl((prev) => {
+          if (prev) URL.revokeObjectURL(prev);
+          return url;
+        });
+      } catch (err) {
+        console.error("PDF load error:", err);
+        setPdfUrl("");
+      }
+    };
+
+    loadPdf();
+    return () => {
+      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+    };
+  }, [content, userTier, selectedPdfIndex]);
 
   const handleDownload = async (filename, pdfName) => {
     const { token } = getAuthCookies();
@@ -157,16 +181,21 @@ export default function ContentPage() {
     }
   };
 
-  const getPdfUrl = (filename) => {
-  const { token } = getAuthCookies();
-  // Use the iframe endpoint which has zero restrictions
-  return `${API_BASE_URL}/api/v1/content/${userTier}/iframe/${filename}?token=${token}`;
-};
-
-const getPdfUrlBasic = (filename) => {
-  const { token } = getAuthCookies();
-  return `${API_BASE_URL}/api/v1/content/${userTier}/view/${filename}?token=${token}`;
-};
+  const fetchPdfUrl = async (filename) => {
+    const { token } = getAuthCookies();
+    const response = await fetch(
+      `${API_BASE_URL}/api/v1/content/${userTier}/view/${encodeURIComponent(filename)}`,
+      {
+        headers: getCommonHeaders(true, token),
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || `Failed to load ${filename}`);
+    }
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  };
 
   const nextPdf = () => {
     if (selectedPdfIndex < content.pdfs.length - 1) {
@@ -512,9 +541,9 @@ const getPdfUrlBasic = (filename) => {
           <div className="flex-1 p-6 bg-gradient-to-br from-muted/20 to-background">
             <div className="h-full bg-white rounded-xl border border-border shadow-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50"></div>
-              {currentPdf && (
+              {currentPdf && pdfUrl && (
                 <iframe
-                  src={`${getPdfUrl(currentPdf.filename)}#page=${currentPage}&toolbar=0&navpanes=0&scrollbar=1&zoom=100`}
+                  src={`${pdfUrl}#page=${currentPage}&toolbar=0&navpanes=0&scrollbar=1&zoom=100`}
                   className="w-full h-full relative z-10 rounded-xl"
                   title={currentPdf.name}
                   onLoad={(e) => {
