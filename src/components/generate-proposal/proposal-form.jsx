@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { getAuthCookies, getCommonHeaders } from "@/lib/auth";
@@ -249,7 +248,7 @@ export default function ProposalForm({ onSuccess }) {
                 </div>
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-              <Button
+              <motion.button
                 className="w-full rounded-md bg-purple-600 py-2 text-lg font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:opacity-50"
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
@@ -258,7 +257,7 @@ export default function ProposalForm({ onSuccess }) {
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Generate Proposal
-              </Button>
+              </motion.button>
             </form>
           </CardContent>
         </Card>
