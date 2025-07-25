@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAuthCookies, getCommonHeaders, getCurrentUser } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Download, FileText, Star, Crown, Zap, ArrowRight } from "lucide-react";
+import { Loader2, FileText, Star, Crown, Zap, ArrowRight, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -16,6 +16,8 @@ export default function ContentPage() {
   const [content, setContent] = useState(null);
   const [userTier, setUserTier] = useState(null);
   const [user, setUser] = useState(null);
+  const [selectedPdfIndex, setSelectedPdfIndex] = useState(0);
+  const [pdfUrl, setPdfUrl] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -71,40 +73,44 @@ export default function ContentPage() {
     fetchContent();
   }, [router]);
 
-  const handleDownload = async (filename) => {
+  const loadPdf = async (index) => {
+    if (!content || !content.pdfs[index]) return;
     const { token } = getAuthCookies();
-    if (!token || !userTier) {
-      alert("Authentication required to download files.");
-      router.push("/login");
-      return;
-    }
-
     try {
+      const filename = content.pdfs[index].filename;
       const response = await fetch(
         `${API_BASE_URL}/api/v1/content/${userTier}/download/${filename}`,
-        {
-          headers: getCommonHeaders(true, token),
-        }
+        { headers: getCommonHeaders(true, token) }
       );
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || `Failed to download ${filename}`);
-      }
-
+      if (!response.ok) throw new Error(`Failed to load ${filename}`);
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      const url = URL.createObjectURL(blob);
+      setPdfUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return url;
+      });
+      setSelectedPdfIndex(index);
     } catch (err) {
-      alert(`Download failed: ${err.message}`);
-      console.error("Download error:", err);
+      console.error("PDF load error:", err);
     }
+  };
+
+  useEffect(() => {
+    if (content && content.pdfs.length > 0) {
+      loadPdf(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]);
+
+  const handleNextPdf = () => {
+    const next = (selectedPdfIndex + 1) % content.pdfs.length;
+    loadPdf(next);
+  };
+
+  const handlePrevPdf = () => {
+    const prev =
+      (selectedPdfIndex - 1 + content.pdfs.length) % content.pdfs.length;
+    loadPdf(prev);
   };
 
   const getTierIcon = (tier) => {
@@ -236,64 +242,65 @@ export default function ContentPage() {
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-4xl mx-auto"
+<motion.div
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.2 }}
+  className="grid gap-6 lg:grid-cols-4"
+>
+  <Card className="glass-effect border-primary/20 lg:col-span-1">
+    <CardHeader>
+      <div className="flex items-center space-x-4">
+        <div className={`w-12 h-12 bg-gradient-to-br ${getTierColor(userTier)} rounded-xl flex items-center justify-center text-primary`}>
+          {getTierIcon(userTier)}
+        </div>
+        <div>
+          <CardTitle className="text-2xl">Resources</CardTitle>
+          <p className="text-muted-foreground">
+            {content.pdfs.length} file{content.pdfs.length !== 1 ? 's' : ''}
+          </p>
+        </div>
+      </div>
+    </CardHeader>
+    <CardContent className="space-y-2">
+      {content.pdfs.map((pdf, index) => (
+        <button
+          key={pdf.filename}
+          onClick={() => loadPdf(index)}
+          className={`w-full text-left p-3 rounded-lg border border-border hover:border-primary/50 transition-colors flex items-center space-x-3 ${selectedPdfIndex === index ? 'bg-primary/10' : 'bg-surface/50'}`}
         >
-          <Card className="glass-effect border-primary/20">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${getTierColor(userTier)} rounded-xl flex items-center justify-center text-primary`}>
-                    {getTierIcon(userTier)}
-                  </div>
-                  <div>
-                    <CardTitle className="text-2xl">Available Resources</CardTitle>
-                    <p className="text-muted-foreground">
-                      {content.pdfs.length} file{content.pdfs.length !== 1 ? 's' : ''} ready for download
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
+          <FileText className="w-5 h-5 text-primary" />
+          <span className="flex-1 text-sm font-medium">{pdf.name}</span>
+        </button>
+      ))}
+    </CardContent>
+  </Card>
 
-            <CardContent className="space-y-4">
-              {content.pdfs.map((pdf, index) => (
-                <motion.div
-                  key={pdf.filename}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                  className="flex items-center justify-between p-4 bg-surface/50 rounded-xl border border-border hover:border-primary/50 transition-colors group"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                      <FileText className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold group-hover:text-primary transition-colors">
-                        {pdf.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        PDF Document • Ready to download
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <Button
-                    onClick={() => handleDownload(pdf.filename)}
-                    className="secondary-button"
-                    size="sm"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                </motion.div>
-              ))}
-            </CardContent>
-          </Card>
+  <Card className="glass-effect border-primary/20 lg:col-span-3 overflow-hidden">
+    <CardHeader>
+      <CardTitle>{content.pdfs[selectedPdfIndex]?.name}</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {pdfUrl ? (
+        <iframe src={pdfUrl} className="w-full h-[70vh] rounded-lg" />
+      ) : (
+        <div className="h-[70vh] flex items-center justify-center text-muted-foreground">
+          Select a file to view
+        </div>
+      )}
+    </CardContent>
+    {content.pdfs.length > 1 && (
+      <CardFooter className="flex justify-between">
+        <Button onClick={handlePrevPdf} variant="secondary" size="sm">
+          <ArrowLeft className="w-4 h-4 mr-2" /> Prev
+        </Button>
+        <Button onClick={handleNextPdf} variant="secondary" size="sm">
+          Next <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+      </CardFooter>
+    )}
+  </Card>
+</motion.div>
 
           {userTier === "tier3" && (
             <motion.div
