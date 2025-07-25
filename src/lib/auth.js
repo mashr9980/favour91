@@ -85,9 +85,12 @@ export function clearAuthCookies() {
 }
 
 // Helper function to get redirect path based on role (if you add roles later)
-export function getRedirectPath(role) {
+export function getRedirectPath(tier, role = null) {
   if (role === "admin") {
     return "/admin/dashboard";
+  }
+  if (tier) {
+    return "/content";
   }
   return "/";
 }
