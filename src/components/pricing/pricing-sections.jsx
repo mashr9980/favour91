@@ -6,7 +6,7 @@ import { Check, ArrowRight, Loader2 } from "lucide-react";
 import Wrapper from "../wrapper";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { API_BASE_URL } from "@/lib/api"; // Adjust path as needed
-import { getAuthCookies, getCommonHeaders } from "@/lib/auth";
+import { getAuthCookies, getCommonHeaders, getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
 
 // API function to fetch pricing plans
@@ -75,6 +75,7 @@ export default function PricingSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [checkoutLoading, setCheckoutLoading] = useState(null); // Track which plan is being processed
+  const [userTier, setUserTier] = useState(null); // Existing subscription tier
 
   // Default/fallback data that matches your original design
   const fallbackData = [
@@ -141,6 +142,23 @@ export default function PricingSection() {
     loadPricingData();
   }, []);
 
+  useEffect(() => {
+    const checkSubscription = async () => {
+      const { token } = getAuthCookies();
+      if (!token) return;
+      try {
+        const user = await getCurrentUser(token);
+        if (user?.tier) {
+          setUserTier(user.tier);
+        }
+      } catch (err) {
+        console.error("Subscription status check failed", err);
+      }
+    };
+
+    checkSubscription();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -161,6 +179,11 @@ export default function PricingSection() {
   };
 
   const handleStartBidding = async (plan) => {
+    if (userTier) {
+      toast.error("You already have an active subscription.");
+      return;
+    }
+
     try {
       setCheckoutLoading(plan.id);
 
