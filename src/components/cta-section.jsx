@@ -54,7 +54,7 @@ export function CtaSection() {
       <div className="absolute bottom-20 right-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
 
       <motion.div
-        className="relative z-10 max-w-6xl mx-auto px-4 lg:px-8 text-center"
+        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"

@@ -49,7 +49,7 @@ export function HeroSection() {
       <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-primary/8 rounded-full blur-xl"></div>
 
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 text-center"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

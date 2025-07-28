@@ -163,7 +163,7 @@ export default function ClientTestimonialsSection() {
 
           <div
             ref={sliderContainerRef}
-            className="overflow-hidden w-full max-w-6xl mx-auto px-16"
+            className="overflow-hidden w-full max-w-6xl mx-auto px-4 sm:px-16"
           >
             <motion.div
               className="flex gap-8"
