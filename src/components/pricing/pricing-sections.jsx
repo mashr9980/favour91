@@ -5,11 +5,10 @@ import { useRef, useState, useEffect } from "react";
 import { Check, ArrowRight, Loader2 } from "lucide-react";
 import Wrapper from "../wrapper";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { API_BASE_URL } from "@/lib/api"; // Adjust path as needed
+import { API_BASE_URL } from "@/lib/api";
 import { getAuthCookies, getCommonHeaders, getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
 
-// API function to fetch pricing plans
 async function fetchPricingPlans() {
   try {
     const response = await fetch(`${API_BASE_URL}/api/v1/pricing`, {
@@ -22,7 +21,6 @@ async function fetchPricingPlans() {
     }
 
     const plans = await response.json();
-    // Filter only active plans and sort by tier
     const activePlans = plans.filter((plan) => plan.is_active);
     return activePlans.sort((a, b) => {
       const tierOrder = { tier1: 1, tier2: 2, tier3: 3 };
@@ -35,9 +33,8 @@ async function fetchPricingPlans() {
   }
 }
 
-// API function to create checkout session
 async function createCheckoutSession(tier) {
-  const { token } = getAuthCookies(); // Get token from cookies
+  const { token } = getAuthCookies();
 
   try {
     if (!token) {
@@ -52,7 +49,6 @@ async function createCheckoutSession(tier) {
     const checkoutData = await response.json();
 
     if (!response.ok) {
-      // Check for "already subscribed" error detail
       if (checkoutData?.detail) {
         throw new Error(checkoutData.detail);
       }
@@ -74,10 +70,9 @@ export default function PricingSection() {
   const [pricingData, setPricingData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [checkoutLoading, setCheckoutLoading] = useState(null); // Track which plan is being processed
-  const [userTier, setUserTier] = useState(null); // Existing subscription tier
+  const [checkoutLoading, setCheckoutLoading] = useState(null);
+  const [userTier, setUserTier] = useState(null);
 
-  // Default/fallback data that matches your original design
   const fallbackData = [
     {
       id: 1,
@@ -132,7 +127,6 @@ export default function PricingSection() {
         setPricingData(plans);
       } catch (err) {
         setError(err.message);
-        // Use fallback data if API fails
         setPricingData(fallbackData);
       } finally {
         setLoading(false);
@@ -187,12 +181,10 @@ export default function PricingSection() {
     try {
       setCheckoutLoading(plan.id);
 
-      // Use the tier from the plan data, fallback to mapping if needed
       const tier = plan.tier || getTierFromPlan(plan);
 
       const checkoutData = await createCheckoutSession(tier);
 
-      // Redirect to Stripe checkout
       if (checkoutData.checkout_url) {
         window.location.href = checkoutData.checkout_url;
       } else {
@@ -206,7 +198,6 @@ export default function PricingSection() {
     }
   };
 
-  // Helper function to map plan to tier if tier is not directly available
   const getTierFromPlan = (plan) => {
     if (plan.name || plan.title) {
       const planName = (plan.name || plan.title).toLowerCase();
@@ -225,30 +216,18 @@ export default function PricingSection() {
       }
     }
 
-    // Fallback based on index/id
     if (plan.id <= 1) return "tier1";
     if (plan.id === 2) return "tier2";
     return "tier3";
   };
 
-  const handleLearnMore = (plan) => {
-    // Add your logic for learn more
-    console.log(
-      "Learn more about plan:",
-      plan.name || plan.title,
-      "tier:",
-      plan.tier
-    );
-    // You can navigate to a detailed pricing page or open a modal with plan.description
-  };
-
   if (loading) {
     return (
-      <section className="w-full py-12 bg-white">
+      <section className="w-full py-12 bg-background">
         <Wrapper className="text-center">
           <div className="flex justify-center items-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-3 text-lg text-gray-600">
+            <span className="ml-3 text-lg text-muted-foreground">
               Loading pricing plans...
             </span>
           </div>
@@ -258,81 +237,83 @@ export default function PricingSection() {
   }
 
   return (
-  <section className="w-full py-12 bg-background text-foreground">
-    <Wrapper className="text-center" ref={ref}>
-      {error && (
-        <div className="mb-6 p-4 bg-yellow-900/20 border border-yellow-800 rounded-lg">
-          <p className="text-yellow-200 text-sm">
-            Unable to load latest pricing data. Showing default plans.
-          </p>
-        </div>
-      )}
+    <section className="w-full py-12 bg-background text-foreground">
+      <Wrapper className="text-center" ref={ref}>
+        {error && (
+          <div className="mb-6 p-4 bg-yellow-900/20 border border-yellow-800 rounded-lg">
+            <p className="text-yellow-200 text-sm">
+              Unable to load latest pricing data. Showing default plans.
+            </p>
+          </div>
+        )}
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-6"
-        variants={containerVariants}
-      >
-        {pricingData.map((card) => (
-          <motion.div
-            key={card.id}
-            className="relative flex flex-col rounded-xl border border-border bg-card text-card-foreground shadow-md overflow-hidden"
-            variants={itemVariants}
-            whileHover={{
-              scale: 1.02,
-              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
-              borderColor: "#a855f7",
-              transition: { duration: 0.3, ease: "easeOut" },
-            }}
-          >
-            <div className="bg-primary text-primary-foreground py-6 px-8 rounded-t-xl">
-              <h3 className="text-2xl font-bold">
-                {card.name || card.title}
-              </h3>
-            </div>
-            <div className="flex flex-col pt-8 items-center flex-1">
-              <h2 className="text-[20px] font-semibold text-primary mb-6 bg-primary/10 rounded-full px-4 py-3">
-                ${card.price}/Month
-              </h2>
-              <ul className="space-y-4 text-left flex-1 w-full px-6">
-                {card.features.map((feature, featureIndex) => (
-                  <li
-                    key={featureIndex}
-                    className="flex items-center group text-base border-b border-muted pb-2 last:border-none"
-                  >
-                    <Check
-                      className="h-5 w-5 text-primary mr-2 flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span className="font-medium">
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <div className="flex w-full pt-4">
-                <button
-                  onClick={() => handleStartBidding(card)}
-                  disabled={checkoutLoading === card.id}
-                  className="flex items-center justify-center w-full py-2 rounded-bl-lg bg-primary/20 text-foreground hover:bg-primary hover:text-white font-semibold text-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {checkoutLoading === card.id ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      <span>Processing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Start Bidding</span>
-                      <FaLongArrowAltRight className="ml-2 h-5 w-5" />
-                    </>
-                  )}
-                </button>
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 px-4 md:px-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {pricingData.map((card) => (
+            <motion.div
+              key={card.id}
+              className="relative flex flex-col rounded-xl border border-border bg-card text-card-foreground shadow-md overflow-hidden"
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.02,
+                boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
+                borderColor: "#a855f7",
+                transition: { duration: 0.3, ease: "easeOut" },
+              }}
+            >
+              <div className="bg-primary text-primary-foreground py-4 sm:py-6 px-6 sm:px-8 rounded-t-xl">
+                <h3 className="text-lg sm:text-2xl font-bold">
+                  {card.name || card.title}
+                </h3>
               </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-    </Wrapper>
-  </section>
-);
+              <div className="flex flex-col pt-6 sm:pt-8 items-center flex-1">
+                <h2 className="text-lg sm:text-[20px] font-semibold text-primary mb-4 sm:mb-6 bg-primary/10 rounded-full px-3 sm:px-4 py-2 sm:py-3">
+                  ${card.price}/Month
+                </h2>
+                <ul className="space-y-3 sm:space-y-4 text-left flex-1 w-full px-4 sm:px-6">
+                  {card.features.map((feature, featureIndex) => (
+                    <li
+                      key={featureIndex}
+                      className="flex items-center group text-sm sm:text-base border-b border-muted pb-2 last:border-none"
+                    >
+                      <Check
+                        className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="font-medium">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex w-full pt-4">
+                  <button
+                    onClick={() => handleStartBidding(card)}
+                    disabled={checkoutLoading === card.id}
+                    className="flex items-center justify-center w-full py-3 sm:py-2 rounded-bl-lg bg-primary/20 text-foreground hover:bg-primary hover:text-white font-semibold text-base sm:text-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {checkoutLoading === card.id ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+                        <span>Processing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Start Bidding</span>
+                        <FaLongArrowAltRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </Wrapper>
+    </section>
+  );
 }
